@@ -1,80 +1,86 @@
 "use strict";
 
-let numberOfFilms;
-
-function start() {
-  numberOfFilms = prompt("How many films you watched ?");
-
-  while (numberOfFilms == "" || numberOfFilms == null || isNaN(numberOfFilms)) {
-    numberOfFilms = prompt("How many films you watched ?");
-  }
-}
-
-start();
-
-function detectPersonalLevel() {
-  if (numberOfFilms < 10) {
-    alert("You`ve watched not much");
-  } else if (numberOfFilms >= 10 && numberOfFilms < 30) {
-    alert("You`re an avarage viewer");
-  } else if (numberOfFilms >= 30) {
-    alert("You`re a kinoman");
-  } else {
-    console.log("error numberOfFilms");
-  }
-}
-
-detectPersonalLevel();
-
 const personalMovieDB = {
-  count: numberOfFilms,
+  count: 0,
   movies: {},
   actors: {},
   genres: [],
   privat: false,
-};
 
-function showMyDB() {
-  if (personalMovieDB.privat === true) {
-    console.log("PersonalMovieDB is privat");
-  }
+  start: function () {
+    personalMovieDB.count = prompt("How many films you watched ?");
 
-  console.log(personalMovieDB);
-}
-
-function remeberMyFilms() {
-  for (let i = 0; i < 2; i++) {
-    const movieName = prompt("One of the recent films you`ve watched ?");
-    const movieMark = +prompt("How would you rate it ?");
-
-    if (
-      movieMark !== 0 &&
-      movieName !== 0 &&
-      movieName !== "" &&
-      movieName !== "" &&
-      movieName.length < 50
+    while (
+      personalMovieDB.count == "" ||
+      personalMovieDB.count == null ||
+      isNaN(personalMovieDB.count)
     ) {
-      personalMovieDB.movies[movieName] = movieMark;
-      console.log("done");
+      personalMovieDB.count = prompt("How many films you watched ?");
+    }
+  },
+
+  showMyDB: function () {
+    if (!personalMovieDB.privat) {
+      console.log("PersonalMovieDB is privat");
     } else {
-      console.log("error movieName && movieMark");
-      i--;
+      console.log(personalMovieDB);
     }
-  }
-}
+  },
 
-remeberMyFilms();
+  toogleVisibleMyDB: function () {
+    if (personalMovieDB.privat) {
+      personalMovieDB.privat = false;
+    } else {
+      personalMovieDB.privat = true;
+    }
+  },
 
-function writeYourGenres() {
-  for (let i = 1; i <= 3; i++) {
-    const genresOfFilms = prompt(`Your favourite genre №${i}`);
+  writeYourGenres: function () {
+    for (let i = 1; i <= 3; i++) {
+      const genresOfFilms = prompt(`Your favourite genre №${i}`);
 
-    if (genresOfFilms == "" || genresOfFilms == null || isNaN(genresOfFilms)) {
-      i--;
+      if (genresOfFilms == "" || genresOfFilms == null) {
+        i--;
+      } else {
+        personalMovieDB.genres.push(genresOfFilms);
+      }
     }
 
-    personalMovieDB.genres.push(genresOfFilms);
-  }
-}
+    personalMovieDB.genres.forEach((item, i) => {
+      console.log(`Favourite genre ${i + 1} - ${item}`);
+    });
+  },
 
-writeYourGenres();
+  detectPersonalLevel: function () {
+    if (personalMovieDB.count < 10) {
+      alert("You`ve watched not much");
+    } else if (personalMovieDB.count >= 10 && personalMovieDB.count < 30) {
+      alert("You`re an avarage viewer");
+    } else if (personalMovieDB.count >= 30) {
+      alert("You`re a kinoman");
+    } else {
+      console.log("error numberOfFilms");
+    }
+  },
+
+  remeberMyFilms: function () {
+    for (let i = 0; i < 2; i++) {
+      const movieName = prompt("One of the recent films you`ve watched ?");
+      const movieMark = +prompt("How would you rate it ?");
+
+      if (
+        movieMark !== 0 &&
+        movieName !== 0 &&
+        movieName !== "" &&
+        movieName !== "" &&
+        movieName.length < 50
+      ) {
+        personalMovieDB.movies[movieName] = movieMark;
+        console.log("done");
+      } else {
+        console.log("error movieName && movieMark");
+        i--;
+      }
+    }
+  },
+};
